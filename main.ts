@@ -21,6 +21,52 @@ function 交錯放置 (外層: number, 材料名稱值: string) {
     }
     agent.teleport(中心位置, WEST)
 }
+// 主要的程序
+player.onChat("Bu", function () {
+    層數 = 3
+    for (let index = 0; index < 18; index++) {
+        中空層(1, 0, blocks.nameOfBlock(CHISELED_SANDSTONE))
+        層數 += 1
+    }
+    player.say("目前高度為" + 層數)
+    中空層(最大外, 0, blocks.nameOfBlock(CHISELED_SANDSTONE))
+    層數 += 1
+    中空層(最大外, 8, blocks.nameOfBlock(CHISELED_SANDSTONE))
+    層數 += 1
+    中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
+    中空層(最大外 - 1, 8, blocks.nameOfBlock(WATER))
+    層數 += 1
+    中空層(最大外, 9, blocks.nameOfBlock(CHISELED_RED_SANDSTONE))
+    層數 += 1
+    player.say("目前高度為" + 層數)
+    for (let index = 0; index < 6; index++) {
+        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
+        網狀結構(9, true, 0, blocks.nameOfBlock(CHISELED_TUFF))
+        層數 += 1
+        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_RED_SANDSTONE))
+        交錯放置(9, blocks.nameOfBlock(IRON_TRAPDOOR))
+        層數 += 1
+        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
+        網狀結構(9, false, 4, blocks.nameOfBlock(IRON_TRAPDOOR))
+        交錯放置(9, blocks.nameOfBlock(AIR))
+        層數 += 1
+        player.say("目前高度為" + 層數)
+    }
+    加上蓋子()
+    blocks.place(CAMPFIRE, positions.add(
+    中心位置,
+    pos(0, 3, 0)
+    ))
+    blocks.place(HOPPER, positions.add(
+    中心位置,
+    pos(0, 2, 0)
+    ))
+    blocks.place(TRAPPED_CHEST, positions.add(
+    中心位置,
+    pos(0, 1, 0)
+    ))
+    player.say("bu 結束了!")
+})
 player.onChat("Clr", function () {
     層數 = 64
     while (層數 >= 0) {
@@ -52,33 +98,7 @@ player.onChat("Clr", function () {
     )
     player.say("CLR done")
 })
-player.onChat("Bu", function () {
-    層數 = 3
-    for (let index = 0; index < 18; index++) {
-        中空層(1, 0, blocks.nameOfBlock(CHISELED_SANDSTONE))
-        層數 += 1
-    }
-    中空層(最大外, 0, blocks.nameOfBlock(CHISELED_SANDSTONE))
-    層數 += 1
-    中空層(最大外, 8, blocks.nameOfBlock(CHISELED_SANDSTONE))
-    層數 += 1
-    中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
-    中空層(最大外 - 1, 8, blocks.nameOfBlock(WATER))
-    層數 += 1
-    中空層(最大外, 9, blocks.nameOfBlock(CHISELED_RED_SANDSTONE))
-    層數 += 1
-    for (let index = 0; index < 6; index++) {
-        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
-        網狀結構(9, true, 0, blocks.nameOfBlock(CHISELED_TUFF))
-        層數 += 1
-        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_RED_SANDSTONE))
-        交錯放置(9, blocks.nameOfBlock(IRON_TRAPDOOR))
-        層數 += 1
-        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
-        網狀結構(9, false, 4, blocks.nameOfBlock(IRON_TRAPDOOR))
-        交錯放置(9, blocks.nameOfBlock(AIR))
-        層數 += 1
-    }
+function 加上蓋子 () {
     blocks.fill(
     CHISELED_SANDSTONE,
     positions.add(
@@ -104,19 +124,7 @@ player.onChat("Bu", function () {
     ),
     FillOperation.Replace
     )
-    blocks.place(CAMPFIRE, positions.add(
-    中心位置,
-    pos(0, 3, 0)
-    ))
-    blocks.place(HOPPER, positions.add(
-    中心位置,
-    pos(0, 2, 0)
-    ))
-    blocks.place(TRAPPED_CHEST, positions.add(
-    中心位置,
-    pos(0, 1, 0)
-    ))
-})
+}
 function 中空層 (外尺寸: number, 內尺寸: number, 材料: string) {
     左上 = positions.add(
     中心位置,
@@ -191,5 +199,8 @@ let 中心位置: Position = null
 player.position(),
 posLocal(0, 0, 4)
 )
-中心位置 = world(200, -60, 200)
 最大外 = 10
+player.say("如果要調整初始位置，請用 set ### ### ###")
+player.say("如果如果準備好，請用 Bu")
+player.say("如果如果做壞了就，請用 clr")
+player.say("祝你好運!")
