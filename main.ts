@@ -1,5 +1,5 @@
 player.onChat("set", function (num1, num2, num3) {
-	
+    中心位置 = world(num1, num2, num3)
 })
 function 交錯放置 (外層: number, 材料名稱值: string) {
     Xx = 外層 * -1
@@ -40,7 +40,7 @@ player.onChat("Clr", function () {
         層數 += -1
     }
     blocks.fill(
-    OCHRE_FROGLIGHT,
+    VERDANT_FROGLIGHT,
     positions.add(
     中心位置,
     pos(6, 0, 6)
@@ -55,33 +55,36 @@ player.onChat("Clr", function () {
 player.onChat("Bu", function () {
     層數 = 4
     for (let index = 0; index < 18; index++) {
-        中空層(1, 0, 中心位置, blocks.nameOfBlock(STONE))
+        中空層(1, 0, blocks.nameOfBlock(STONE))
         層數 += 1
     }
-    中空層(10, 0, 中心位置, blocks.nameOfBlock(STONE))
+    中空層(10, 0, blocks.nameOfBlock(STONE))
     層數 += 1
-    中空層(10, 8, 中心位置, blocks.nameOfBlock(STONE))
+    中空層(10, 8, blocks.nameOfBlock(STONE))
     層數 += 1
-    中空層(10, 9, 中心位置, blocks.nameOfBlock(STONE_BRICKS_SLAB))
-    中空層(9, 8, 中心位置, blocks.nameOfBlock(WATER))
+    中空層(10, 9, blocks.nameOfBlock(STONE_BRICKS_SLAB))
+    中空層(9, 8, blocks.nameOfBlock(WATER))
     層數 += 2
     for (let index = 0; index < 6; index++) {
-        網狀結構(7, true, 0, blocks.nameOfBlock(CHISELED_TUFF))
+        中空層(10, 9, blocks.nameOfBlock(CHISELED_STONE_BRICK_MONSTER_EGG))
+        網狀結構(8, true, 0, blocks.nameOfBlock(CHISELED_TUFF))
         層數 += 1
-        交錯放置(7, blocks.nameOfBlock(WOODEN_BUTTON))
+        中空層(10, 9, blocks.nameOfBlock(CHISELED_STONE_BRICK_MONSTER_EGG))
+        交錯放置(8, blocks.nameOfBlock(WOODEN_BUTTON))
         層數 += 1
-        網狀結構(7, false, 4, blocks.nameOfBlock(IRON_TRAPDOOR))
+        中空層(10, 9, blocks.nameOfBlock(CHISELED_STONE_BRICK_MONSTER_EGG))
+        網狀結構(8, false, 4, blocks.nameOfBlock(IRON_TRAPDOOR))
         層數 += 1
     }
     blocks.fill(
     STONE,
     positions.add(
     中心位置,
-    pos(24, 層數, -24)
+    pos(8, 層數, 8)
     ),
     positions.add(
     中心位置,
-    pos(-24, 層數, 24)
+    pos(-8, 層數, -8)
     ),
     FillOperation.Replace
     )
@@ -90,11 +93,11 @@ player.onChat("Bu", function () {
     SMOOTH_STONE_SLAB,
     positions.add(
     中心位置,
-    pos(24, 層數, -24)
+    pos(8, 層數, 8)
     ),
     positions.add(
     中心位置,
-    pos(-24, 層數, 24)
+    pos(8, 層數, 8)
     ),
     FillOperation.Replace
     )
@@ -111,7 +114,7 @@ player.onChat("Bu", function () {
     pos(0, 1, 0)
     ))
 })
-function 中空層 (外尺寸: number, 內尺寸: number, 中: Position, 材料: string) {
+function 中空層 (外尺寸: number, 內尺寸: number, 材料: string) {
     左上 = positions.add(
     中心位置,
     pos(外尺寸 * 1, 層數, 外尺寸 * 1)
@@ -142,7 +145,6 @@ function 中空層 (外尺寸: number, 內尺寸: number, 中: Position, 材料:
     )
 }
 function 網狀結構 (外層: number, 補洞: boolean, 材料資料值: number, 材料名稱值: string) {
-    跳格 = 外層 * -1
     if (補洞) {
         blocks.fill(
         blocks.blockWithData(IRON_TRAPDOOR, 12),
@@ -157,6 +159,7 @@ function 網狀結構 (外層: number, 補洞: boolean, 材料資料值: number,
         FillOperation.Replace
         )
     }
+    跳格 = 外層 * -1
     while (跳格 <= 外層) {
         blocks.fill(
         blocks.blockWithData(blocks.blockByName(材料名稱值), 材料資料值),
