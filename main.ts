@@ -6,14 +6,13 @@ function 交錯放置 (外層: number, 材料名稱值: string) {
     while (Xx <= 外層) {
         if (Math.abs(Xx) % 2 != 0) {
             Yy = 外層 * -1
-            agent.setItem(blocks.blockByName(材料名稱值), 64, 1)
             while (Yy <= 外層) {
                 if (Math.abs(Yy) % 2 != 0) {
-                    agent.teleport(positions.add(
+                    builder.teleportTo(positions.add(
                     中心位置,
                     pos(Xx, 層數, Yy)
-                    ), WEST)
-                    agent.place(DOWN)
+                    ))
+                    builder.place(blocks.blockByName(材料名稱值))
                 }
                 Yy += 1
             }
@@ -51,53 +50,57 @@ player.onChat("Clr", function () {
     ),
     FillOperation.Replace
     )
+    player.say("CLR done")
 })
 player.onChat("Bu", function () {
-    層數 = 4
+    層數 = 3
     for (let index = 0; index < 18; index++) {
-        中空層(1, 0, blocks.nameOfBlock(STONE))
+        中空層(1, 0, blocks.nameOfBlock(CHISELED_SANDSTONE))
         層數 += 1
     }
-    中空層(10, 0, blocks.nameOfBlock(STONE))
+    中空層(最大外, 0, blocks.nameOfBlock(CHISELED_SANDSTONE))
     層數 += 1
-    中空層(10, 8, blocks.nameOfBlock(STONE))
+    中空層(最大外, 8, blocks.nameOfBlock(CHISELED_SANDSTONE))
     層數 += 1
-    中空層(10, 9, blocks.nameOfBlock(STONE_BRICKS_SLAB))
-    中空層(9, 8, blocks.nameOfBlock(WATER))
-    層數 += 2
+    中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
+    中空層(最大外 - 1, 8, blocks.nameOfBlock(WATER))
+    層數 += 1
+    中空層(最大外, 9, blocks.nameOfBlock(CHISELED_RED_SANDSTONE))
+    層數 += 1
     for (let index = 0; index < 6; index++) {
-        中空層(10, 9, blocks.nameOfBlock(CHISELED_STONE_BRICK_MONSTER_EGG))
-        網狀結構(8, true, 0, blocks.nameOfBlock(CHISELED_TUFF))
+        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
+        網狀結構(9, true, 0, blocks.nameOfBlock(CHISELED_TUFF))
         層數 += 1
-        中空層(10, 9, blocks.nameOfBlock(CHISELED_STONE_BRICK_MONSTER_EGG))
-        交錯放置(8, blocks.nameOfBlock(WOODEN_BUTTON))
+        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_RED_SANDSTONE))
+        交錯放置(9, blocks.nameOfBlock(IRON_TRAPDOOR))
         層數 += 1
-        中空層(10, 9, blocks.nameOfBlock(CHISELED_STONE_BRICK_MONSTER_EGG))
-        網狀結構(8, false, 4, blocks.nameOfBlock(IRON_TRAPDOOR))
+        中空層(最大外, 9, blocks.nameOfBlock(CHISELED_SANDSTONE))
+        網狀結構(9, false, 4, blocks.nameOfBlock(IRON_TRAPDOOR))
+        交錯放置(9, blocks.nameOfBlock(AIR))
         層數 += 1
     }
     blocks.fill(
-    STONE,
+    CHISELED_SANDSTONE,
     positions.add(
     中心位置,
-    pos(8, 層數, 8)
+    pos(最大外, 層數, 最大外)
     ),
     positions.add(
     中心位置,
-    pos(-8, 層數, -8)
+    pos(最大外 * -1, 層數, 最大外 * -1)
     ),
     FillOperation.Replace
     )
     層數 += 1
     blocks.fill(
-    SMOOTH_STONE_SLAB,
+    SANDSTONE_SLAB,
     positions.add(
     中心位置,
-    pos(8, 層數, 8)
+    pos(最大外, 層數, 最大外)
     ),
     positions.add(
     中心位置,
-    pos(8, 層數, 8)
+    pos(最大外 * -1, 層數, 最大外 * -1)
     ),
     FillOperation.Replace
     )
@@ -194,8 +197,11 @@ let 左上: Position = null
 let 層數 = 0
 let Yy = 0
 let Xx = 0
+let 最大外 = 0
 let 中心位置: Position = null
 中心位置 = positions.add(
 player.position(),
 posLocal(0, 0, 4)
 )
+中心位置 = world(200, -60, 200)
+最大外 = 10
