@@ -176,18 +176,6 @@ function 網狀結構 (外層: number, 補洞: boolean, 材料資料值: number,
         ),
         FillOperation.Replace
         )
-        blocks.fill(
-        blocks.blockWithData(blocks.blockByName(材料名稱值), 材料資料值),
-        positions.add(
-        中心位置,
-        pos(外層 * 1, 層數, 跳格)
-        ),
-        positions.add(
-        中心位置,
-        pos(外層 * -1, 層數, 跳格)
-        ),
-        FillOperation.Replace
-        )
         跳格 += 2
     }
 }
